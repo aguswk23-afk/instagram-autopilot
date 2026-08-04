@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoPilot OS — Instagram Automation Suite</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f5f3ff',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              900: '#4c1d95',
+              950: '#0c071b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { background-color: #06040a; color: #f3f4f6; }
+    .glass-panel { background: rgba(18, 12, 34, 0.65); backdrop-filter: blur(20px); border: 1px solid rgba(139, 92, 246, 0.12); }
+    .glass-card { background: rgba(24, 16, 46, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.06); }
+    .glass-card:hover { border-color: rgba(139, 92, 246, 0.4); transform: translateY(-2px); }
+    .glow-brand { box-shadow: 0 0 35px -5px rgba(139, 92, 246, 0.3); }
+    .glow-emerald { box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.35); }
+    .glow-rose { box-shadow: 0 0 25px -5px rgba(244, 63, 94, 0.35); }
+    /* Scrollbar personalizada */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #06040a; }
+    ::-webkit-scrollbar-thumb { background: #26174d; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #4c1d95; }
+  </style>
+</head>
+<body class="flex h-screen overflow-hidden font-sans antialiased">
+
+  <!-- SIDEBAR LATERAL (Estilo SaaS Pro) -->
+  <aside class="w-64 border-r border-purple-900/20 glass-panel flex flex-col justify-between p-4 z-20 shrink-0">
+    <div class="space-y-6">
+      <!-- Logo -->
+      <div class="flex items-center gap-3 px-2 pt-2">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-violet-600 via-fuchsia-600 to-pink-500 flex items-center justify-center font-black text-xl text-white shadow-lg glow-brand">
+          ⚡
+        </div>
+        <div>
+          <h2 class="font-black text-lg tracking-wider bg-gradient-to-r from-violet-400 to-pink-300 bg-clip-text text-transparent">AutoPilot</h2>
+          <span class="text-[10px] font-mono uppercase tracking-widest text-purple-400/80">OS Enterprise</span>
+        </div>
+      </div>
+
+      <!-- Menú de Navegación -->
+      <nav class="space-y-1">
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-violet-600/20 text-violet-300 border border-violet-500/30 font-semibold text-xs transition">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
+        </a>
+        <a href="#" onclick="toggleVista('grid')" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-purple-950/40 font-semibold text-xs transition">
+          <i data-lucide="grid" class="w-4 h-4"></i> Visual Feed Grid
+        </a>
+        <a href="#" onclick="sincronizarPlanilla()" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-purple-950/40 font-semibold text-xs transition">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i> Sincronizar Sheets
+        </a>
+        <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-purple-950/40 font-semibold text-xs transition opacity-50 cursor-not-allowed">
+          <i data-lucide="bar-chart-2" class="w-4 h-4"></i> Analytics AI <span class="text-[9px] bg-purple-900/60 text-purple-300 px-1.5 py-0.5 rounded">PRONTO</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- Status del Asistente/Bot e Integración IG -->
+    <div class="space-y-3">
+      <!-- Botón de Conexión de Instagram (OAuth Dinámico Actualizado) -->
+      <div id="authContainer" class="p-3 rounded-xl bg-purple-950/40 border border-purple-800/40 text-center">
+        <p class="text-xs font-bold text-purple-300 mb-2">Estado de Instagram</p>
+        <div id="authContentBox">
+          <button onclick="conectarInstagram()" class="w-full py-2 bg-gradient-to-r from-pink-600 to-purple-600 hover:opacity-90 text-white text-xs font-extrabold rounded-lg shadow transition flex items-center justify-center gap-1.5">
+            <i data-lucide="instagram" class="w-4 h-4"></i> Conectar con Meta
+          </button>
+        </div>
+      </div>
+
+      <!-- Status Engine -->
+      <div class="p-3.5 rounded-2xl bg-purple-950/30 border border-purple-800/30 space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-[11px] font-bold text-purple-300 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Bot Engine
+          </span>
+          <span class="text-[10px] font-mono text-emerald-400">99.9%</span>
+        </div>
+        <p class="text-[10px] text-gray-400 leading-tight">Uvicorn local conectado con la base SQLite activa.</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="flex-1 flex flex-col h-screen overflow-hidden">
+    
+    <!-- TOPBAR -->
+    <header class="h-16 border-b border-purple-900/20 glass-panel flex items-center justify-between px-8 z-10">
+      <div class="flex items-center gap-4">
+        <h1 class="font-extrabold text-lg text-white">Panel de Control</h1>
+        <span class="text-xs text-gray-400 font-mono">| instagram_autopilot.db</span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- AI COPILOT TIP BAR -->
+        <div class="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-950/50 border border-violet-800/40 text-xs text-violet-300">
+          <span class="text-amber-400">💡</span> <b>AI Insight:</b> Publicar hoy a las 19:30 hs aumentará un 24% el alcance.
+        </div>
+
+        <button onclick="abrirModal()" class="px-4 py-2 bg-gradient-to-r from-violet-600 via-indigo-600 to-fuchsia-600 hover:opacity-90 text-white font-bold text-xs rounded-xl shadow-lg glow-brand transition active:scale-95 flex items-center gap-2">
+          <i data-lucide="plus" class="w-4 h-4"></i> Crear Publicación
+        </button>
+      </div>
+    </header>
+
+    <!-- ÁREA CON SCROLL -->
+    <main class="flex-1 overflow-y-auto p-8 space-y-8">
+
+      <!-- MÉTRICAS DE IMPACTO -->
+      <section class="grid grid-cols-1 md:grid-cols-4 gap-5">
+        <div class="glass-card p-5 rounded-2xl space-y-2 border-l-4 border-l-violet-500">
+          <div class="flex justify-between text-xs text-gray-400 font-bold uppercase tracking-wider">
+            <span>Total Posts</span>
+            <i data-lucide="layers" class="w-4 h-4 text-violet-400"></i>
+          </div>
+          <p id="statTotal" class="text-3xl font-black text-white">0</p>
+          <p class="text-[10px] text-gray-500">Publicaciones registradas</p>
+        </div>
+
+        <div class="glass-card p-5 rounded-2xl space-y-2 border-l-4 border-l-amber-500">
+          <div class="flex justify-between text-xs text-gray-400 font-bold uppercase tracking-wider">
+            <span>En Cola (Pending)</span>
+            <i data-lucide="clock" class="w-4 h-4 text-amber-400"></i>
+          </div>
+          <p id="statPending" class="text-3xl font-black text-amber-400">0</p>
+          <p class="text-[10px] text-gray-500">Listas para auto-publicar</p>
+        </div>
+
+        <div class="glass-card p-5 rounded-2xl space-y-2 border-l-4 border-l-emerald-500">
+          <div class="flex justify-between text-xs text-gray-400 font-bold uppercase tracking-wider">
+            <span>Publicadas</span>
+            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+          </div>
+          <p id="statPublished" class="text-3xl font-black text-emerald-400">0</p>
+          <p class="text-[10px] text-gray-500">En el feed de Instagram</p>
+        </div>
+
+        <div class="glass-card p-5 rounded-2xl space-y-2 border-l-4 border-l-rose-500">
+          <div class="flex justify-between text-xs text-gray-400 font-bold uppercase tracking-wider">
+            <span>Fallidas</span>
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-400"></i>
+          </div>
+          <p id="statFailed" class="text-3xl font-black text-rose-400">0</p>
+          <p class="text-[10px] text-gray-500">Requieren atención</p>
+        </div>
+      </section>
+
+      <!-- BARRA DE HERRAMIENTAS, FILTROS Y SELECTOR DE VISTA -->
+      <section class="flex flex-col md:flex-row justify-between items-center gap-4 bg-purple-950/20 p-2.5 rounded-2xl border border-purple-900/30">
+        <!-- Tabs -->
+        <div class="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-purple-900/30">
+          <button onclick="filtrarEstado('ALL')" id="tabALL" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-bold transition bg-violet-600 text-white">Todos</button>
+          <button onclick="filtrarEstado('PENDING')" id="tabPENDING" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition">Pendientes</button>
+          <button onclick="filtrarEstado('PUBLISHED')" id="tabPUBLISHED" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition">Publicados</button>
+          <button onclick="filtrarEstado('FAILED')" id="tabFAILED" class="tab-btn px-4 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition">Fallidos</button>
+        </div>
+
+        <div class="flex items-center gap-3 w-full md:w-auto">
+          <!-- Buscador -->
+          <div class="relative flex-1 md:w-64">
+            <input type="text" id="searchInput" oninput="aplicarFiltros()" placeholder="Buscar en descripciones..." class="w-full bg-black/50 border border-purple-900/40 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-violet-500 transition">
+            <i data-lucide="search" class="w-4 h-4 text-gray-500 absolute left-3 top-2.5"></i>
+          </div>
+
+          <!-- Selector de Modo de Vista -->
+          <div class="flex items-center bg-black/40 p-1 rounded-xl border border-purple-900/30">
+            <button onclick="toggleVista('cards')" id="btnViewCards" title="Vista Tarjetas" class="p-2 rounded-lg bg-violet-600 text-white transition"><i data-lucide="layout-grid" class="w-4 h-4"></i></button>
+            <button onclick="toggleVista('grid')" id="btnViewGrid" title="Simulador Feed Instagram" class="p-2 rounded-lg text-gray-400 hover:text-white transition"><i data-lucide="grid" class="w-4 h-4"></i></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- VISTA 1: GRID DE TARJETAS SAAS -->
+      <section id="vistaCards">
+        <div id="gridPosts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Carga Dinámica -->
+        </div>
+      </section>
+
+      <!-- VISTA 2: SIMULADOR DE FEED DE INSTAGRAM (VISUAL GRID) -->
+      <section id="vistaFeedGrid" class="hidden">
+        <div class="max-w-md mx-auto glass-card rounded-3xl p-4 border border-purple-500/20 shadow-2xl">
+          <div class="flex items-center justify-between pb-3 mb-3 border-b border-purple-900/30">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-yellow-400 via-rose-500 to-purple-600 p-0.5">
+                <div class="w-full h-full bg-black rounded-full p-0.5">
+                  <div class="w-full h-full bg-violet-600 rounded-full flex items-center justify-center text-[10px] font-bold">IG</div>
+                </div>
+              </div>
+              <span id="labelIgUser" class="text-xs font-bold text-white">terranova.s.a</span>
+            </div>
+            <span class="text-[10px] font-mono text-purple-400">Simulador Feed</span>
+          </div>
+
+          <!-- Malla 3x3 tipo Instagram -->
+          <div id="instagramGrid" class="grid grid-cols-3 gap-1 rounded-xl overflow-hidden bg-black/60 p-1 min-h-[300px]">
+            <!-- Carga dinamica del feed -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODAL: CREAR PUBLICACIÓN -->
+  <div id="modalPost" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+    <div class="glass-panel p-6 rounded-3xl max-w-lg w-full border border-violet-500/30 space-y-5 glow-brand">
+      <div class="flex justify-between items-center pb-3 border-b border-purple-900/30">
+        <h3 class="font-extrabold text-base text-white flex items-center gap-2">
+          <i data-lucide="sparkles" class="w-4 h-4 text-violet-400"></i> Programar Nueva Publicación
+        </h3>
+        <button onclick="cerrarModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+
+      <form id="formNuevoPost" onsubmit="guardarNuevoPost(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-purple-300 mb-1">URL de la Imagen / Video</label>
+          <input type="url" id="postUrl" required placeholder="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe" class="w-full bg-black/60 border border-purple-900/40 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-violet-500">
+        </div>
+
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <label class="block text-xs font-bold text-purple-300">Pie de foto (Caption)</label>
+            <button type="button" onclick="mejorarConIA()" class="text-[10px] text-fuchsia-400 hover:underline flex items-center gap-1">✨ Mejorar con IA</button>
+          </div>
+          <textarea id="postCaption" rows="3" required placeholder="Escribí aquí tu descripción..." class="w-full bg-black/60 border border-purple-900/40 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-violet-500"></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-purple-300 mb-1">Tipo de Post</label>
+            <select id="postTipo" class="w-full bg-black/60 border border-purple-900/40 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-violet-500">
+              <option value="IMAGE">IMAGE</option>
+              <option value="REEL">REEL</option>
+              <option value="CAROUSEL">CAROUSEL</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-purple-300 mb-1">Fecha y Hora</label>
+            <input type="datetime-local" id="postHorario" required class="w-full bg-black/60 border border-purple-900/40 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-violet-500">
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-4 border-t border-purple-900/30">
+          <button type="button" onclick="cerrarModal()" class="px-4 py-2.5 bg-black/40 text-gray-400 hover:text-white text-xs font-bold rounded-xl">Cancelar</button>
+          <button type="submit" id="btnGuardarPost" class="px-6 py-2.5 bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold rounded-xl glow-brand transition">Programar Post</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT DE CONTROL -->
+  <script>
+    const API_URL = "http://127.0.0.1:8000";
+    let todosLosPosts = [];
+    let estadoFiltroActual = 'ALL';
+    let vistaActual = 'cards';
+
+    async function cargarPosts() {
+      const grid = document.getElementById("gridPosts");
+      grid.innerHTML = '<div class="col-span-full py-12 text-center text-purple-300/60 text-sm">Cargando publicaciones...</div>';
+
+      try {
+        const res = await fetch(`${API_URL}/posts`);
+        const data = await res.json();
+        
+        todosLosPosts = data.data || [];
+        actualizarMetricas();
+        aplicarFiltros();
+        renderInstagramGrid();
+      } catch (err) {
+        grid.innerHTML = `
+          <div class="col-span-full glass-card p-8 rounded-2xl text-center space-y-2 border-rose-500/30">
+            <p class="text-rose-400 font-bold text-sm">⚠️ Error al conectar con el servidor Python (FastAPI).</p>
+            <p class="text-xs text-gray-400">Asegurate de ejecutar <code class="bg-purple-950 px-2 py-1 rounded text-purple-300">python -m uvicorn api:app --reload</code></p>
+          </div>
+        `;
+      }
+    }
+
+    function conectarInstagram() {
+      window.location.href = `${API_URL}/auth/login`;
+    }
+
+    // MODIFICADO: Verifica el estado y actualiza dinámicamente la tarjeta lateral de Instagram
+    async function verificarEstadoConexion() {
+      try {
+        const res = await fetch(`${API_URL}/auth/estado`);
+        const data = await res.json();
+        
+        const contentBox = document.getElementById("authContentBox");
+        const labelUser = document.getElementById("labelIgUser");
+
+        if(res.ok && data.status === "connected") {
+          // Cambia la tarjeta a estado conectado verde con el nombre de usuario real
+          contentBox.innerHTML = `
+            <div class="flex items-center justify-between bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-2.5 text-left">
+              <div class="flex items-center gap-2 overflow-hidden">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+                <div class="truncate">
+                  <p class="text-[10px] text-emerald-400 font-bold uppercase">Conectado</p>
+                  <p class="text-xs text-white font-mono truncate">${data.user_name || 'Cuenta Comercial'}</p>
+                </div>
+              </div>
+              <button onclick="conectarInstagram()" title="Reconectar / Cambiar cuenta" class="text-[10px] text-gray-400 hover:text-white underline shrink-0">Cambiar</button>
+            </div>
+          `;
+
+          if(labelUser && data.user_name) {
+            labelUser.innerText = data.user_name;
+          }
+        }
+      } catch(err) {
+        console.log("No hay cuenta vinculada todavía o sesión inactiva.");
+      }
+    }
+
+    function actualizarMetricas() {
+      document.getElementById("statTotal").innerText = todosLosPosts.length;
+      document.getElementById("statPending").innerText = todosLosPosts.filter(p => esEstado(p, 'PENDING')).length;
+      document.getElementById("statPublished").innerText = todosLosPosts.filter(p => esEstado(p, 'PUBLISHED')).length;
+      document.getElementById("statFailed").innerText = todosLosPosts.filter(p => esEstado(p, 'FAILED')).length;
+    }
+
+    function esEstado(post, target) {
+      const st = (post.estado || post.status || 'PENDING').toUpperCase();
+      if (target === 'PENDING') return st.includes('PEND');
+      if (target === 'PUBLISHED') return st.includes('PUB') || st.includes('OK');
+      if (target === 'FAILED') return st.includes('FAIL') || st.includes('ERR');
+      return true;
+    }
+
+    function filtrarEstado(estado) {
+      estadoFiltroActual = estado;
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-violet-600', 'text-white');
+        btn.classList.add('text-gray-400');
+      });
+      const activeBtn = document.getElementById(`tab${estado}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-violet-600', 'text-white');
+        activeBtn.classList.remove('text-gray-400');
+      }
+      aplicarFiltros();
+    }
+
+    function aplicarFiltros() {
+      const query = document.getElementById("searchInput").value.toLowerCase();
+      const grid = document.getElementById("gridPosts");
+
+      const filtrados = todosLosPosts.filter(post => {
+        const cumpleEstado = estadoFiltroActual === 'ALL' || esEstado(post, estadoFiltroActual);
+        const caption = (post.caption || post.texto || '').toLowerCase();
+        return cumpleEstado && caption.includes(query);
+      });
+
+      if (filtrados.length === 0) {
+        grid.innerHTML = '<div class="col-span-full glass-card p-12 text-center text-gray-500 text-xs rounded-2xl">No hay publicaciones para mostrar.</div>';
+        return;
+      }
+
+      grid.innerHTML = "";
+      filtrados.forEach(post => {
+        const horario = post.horario || post.horario_programado || post.fecha || 'Sin fecha';
+        const caption = post.caption || post.texto || 'Sin descripción';
+        const tipo = post.tipo || 'IMAGE';
+        const url = post.url || post.media_url || '';
+
+        let badgeStyle = 'bg-amber-500/10 text-amber-400 border-amber-500/30';
+        let badgeText = 'PENDIENTE';
+
+        if (esEstado(post, 'PUBLISHED')) {
+          badgeStyle = 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 glow-emerald';
+          badgeText = 'PUBLICADO';
+        } else if (esEstado(post, 'FAILED')) {
+          badgeStyle = 'bg-rose-500/10 text-rose-400 border-rose-500/30 glow-rose';
+          badgeText = 'FALLIDO';
+        }
+
+        grid.innerHTML += `
+          <div class="glass-card p-5 rounded-2xl space-y-4 flex flex-col justify-between group">
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="px-2.5 py-1 rounded-lg text-[10px] font-black border ${badgeStyle}">${badgeText}</span>
+                <span class="text-xs text-purple-300/70 font-mono flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ${horario}</span>
+              </div>
+
+              <!-- Media Preview -->
+              <div class="w-full h-40 bg-black/60 rounded-xl overflow-hidden border border-purple-900/30 relative flex items-center justify-center group-hover:border-violet-500/40 transition">
+                <img src="${url}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" class="w-full h-full object-cover">
+                <div class="hidden flex-col items-center gap-1 text-purple-400/40 text-xs">
+                  <i data-lucide="image" class="w-6 h-6"></i>
+                  <span class="font-mono text-[10px]">${tipo} MEDIA</span>
+                </div>
+              </div>
+
+              <p class="text-xs text-gray-300 line-clamp-3 leading-relaxed font-normal">"${caption}"</p>
+            </div>
+
+            <!-- Acciones -->
+            <div class="pt-3 border-t border-purple-900/20 flex items-center justify-between text-xs">
+              <span class="font-mono text-[10px] text-purple-400 uppercase">${tipo}</span>
+              <div class="flex items-center gap-2">
+                ${esEstado(post, 'FAILED') ? `<button onclick="alert('Reintentando post...')" class="px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 text-[10px] font-bold border border-rose-500/30">🔄 Reintentar</button>` : ''}
+                <a href="${url}" target="_blank" class="p-1.5 rounded-lg hover:bg-purple-900/30 text-gray-400 hover:text-white"><i data-lucide="external-link" class="w-3.5 h-3.5"></i></a>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      lucide.createIcons();
+    }
+
+    function renderInstagramGrid() {
+      const grid = document.getElementById("instagramGrid");
+      grid.innerHTML = "";
+      
+      const postsParaGrid = todosLosPosts.slice(0, 9);
+      for(let i = 0; i < 9; i++) {
+        const post = postsParaGrid[i];
+        if (post && post.url) {
+          grid.innerHTML += `
+            <div class="aspect-square bg-purple-950/40 relative group overflow-hidden">
+              <img src="${post.url}" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center p-1 text-[9px] text-center text-white font-bold">
+                ${post.tipo || 'POST'}
+              </div>
+            </div>
+          `;
+        } else {
+          grid.innerHTML += `<div class="aspect-square bg-purple-950/20 border border-purple-900/10 flex items-center justify-center text-[10px] text-purple-500/30 font-mono">+</div>`;
+        }
+      }
+    }
+
+    function toggleVista(tipo) {
+      vistaActual = tipo;
+      if(tipo === 'cards') {
+        document.getElementById("vistaCards").classList.remove("hidden");
+        document.getElementById("vistaFeedGrid").classList.add("hidden");
+        document.getElementById("btnViewCards").classList.add("bg-violet-600", "text-white");
+        document.getElementById("btnViewGrid").classList.remove("bg-violet-600", "text-white");
+      } else {
+        document.getElementById("vistaCards").classList.add("hidden");
+        document.getElementById("vistaFeedGrid").classList.remove("hidden");
+        document.getElementById("btnViewGrid").classList.add("bg-violet-600", "text-white");
+        document.getElementById("btnViewCards").classList.remove("bg-violet-600", "text-white");
+      }
+    }
+
+    async function sincronizarPlanilla() {
+      alert("⏳ Conectando con Google Sheets/CSV...");
+      try {
+        const res = await fetch(`${API_URL}/posts/importar-csv`, { method: "POST" });
+        const data = await res.json();
+        alert("✅ " + (data.output || "Sincronización masiva completada"));
+        cargarPosts();
+      } catch (err) {
+        alert("❌ Error al sincronizar.");
+      }
+    }
+
+    function abrirModal() { document.getElementById("modalPost").classList.remove("hidden"); document.getElementById("modalPost").classList.add("flex"); }
+    function cerrarModal() { document.getElementById("modalPost").classList.add("hidden"); document.getElementById("modalPost").classList.remove("flex"); }
+
+    function mejorarConIA() {
+      const cap = document.getElementById("postCaption");
+      if(!cap.value) cap.value = "🚀 ¡Potenciá tu presencia digital hoy! Descubrí más en el link de nuestra bio. ";
+      cap.value += " #Automation #MarketingDigital #Growth2026 #InstagramStrategy";
+    }
+
+    async function guardarNuevoPost(e) {
+      e.preventDefault();
+      const rawHorario = document.getElementById("postHorario").value;
+      const payload = {
+        url: document.getElementById("postUrl").value,
+        caption: document.getElementById("postCaption").value,
+        tipo: document.getElementById("postTipo").value,
+        horario: rawHorario.replace("T", " ")
+      };
+
+      try {
+        const res = await fetch(`${API_URL}/posts/crear`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if(res.ok) {
+          cerrarModal();
+          document.getElementById("formNuevoPost").reset();
+          cargarPosts();
+        }
+      } catch(err) { alert("❌ Error creando post."); }
+    }
+
+    // Inicializar al cargar la página
+    cargarPosts();
+    verificarEstadoConexion();
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+2026-08-03 05:44:15,904 | INFO     | database | Base de datos inicializada correctamente en 'instagram_autopilot.db'.
+2026-08-03 05:45:04,812 | INFO     | database | Base de datos inicializada correctamente en 'instagram_autopilot.db'.
+2026-08-03 05:45:04,814 | INFO     | __main__ | Calculando el mejor horario según la audiencia...
+2026-08-03 05:45:05,181 | ERROR    | analytics | Error HTTP al consultar online_followers: {"error":{"message":"Invalid OAuth access token - Cannot parse access token","type":"OAuthException","code":190,"fbtrace_id":"AIzHqRFwU4Zo_hbzdpMCsQJ"}}
+2026-08-03 14:20:50,865 | INFO     | __main__ | Iniciando Piloto Automático de Instagram...
+2026-08-03 14:20:50,876 | INFO     | database | Base de datos inicializada correctamente en 'instagram_autopilot.db'.
+2026-08-03 14:20:50,878 | INFO     | apscheduler.scheduler | Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-03 14:20:50,878 | INFO     | scheduler | Scheduler iniciado. Revisando la base de datos cada 5 minuto(s). Presiona Ctrl+C para detener.
+2026-08-03 14:20:50,899 | INFO     | apscheduler.scheduler | Added job "procesar_posts_pendientes" to job store "default"
+2026-08-03 14:20:50,899 | INFO     | apscheduler.scheduler | Scheduler started
+2026-08-03 14:20:50,900 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 17:25:50 UTC)" (scheduled at 2026-08-03 17:20:50.876911+00:00)
+2026-08-03 14:20:50,908 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 17:25:50 UTC)" executed successfully
+2026-08-03 14:25:16,174 | INFO     | scheduler | Scheduler detenido por el usuario.
+2026-08-03 14:26:58,279 | INFO     | database | Base de datos inicializada correctamente en 'instagram_autopilot.db'.
+2026-08-03 14:28:15,115 | INFO     | database | Base de datos inicializada correctamente en 'instagram_autopilot.db'.
+2026-08-03 14:29:29,452 | INFO     | database | Base de datos inicializada correctamente en 'instagram_autopilot.db'.
+2026-08-03 14:29:29,453 | INFO     | __main__ | Calculando el mejor horario según la audiencia...
+2026-08-03 14:29:29,821 | ERROR    | analytics | Error HTTP al consultar online_followers: {"error":{"message":"Invalid OAuth access token - Cannot parse access token","type":"OAuthException","code":190,"fbtrace_id":"A26SRnvInAKiR2tqmBVV2UX"}}
+2026-08-03 14:32:15,306 | INFO     | database | Base de datos inicializada correctamente en 'instagram_autopilot.db'.
+2026-08-03 14:32:59,474 | INFO     | database | Base de datos inicializada correctamente en 'instagram_autopilot.db'.
+2026-08-03 14:32:59,483 | INFO     | database | Post creado con id=1, programado para 2026-08-03 16:00:00.
+2026-08-03 14:33:47,863 | INFO     | __main__ | Iniciando Piloto Automático de Instagram...
+2026-08-03 14:33:47,866 | INFO     | database | Base de datos inicializada correctamente en 'instagram_autopilot.db'.
+2026-08-03 14:33:47,868 | INFO     | apscheduler.scheduler | Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-03 14:33:47,868 | INFO     | scheduler | Scheduler iniciado. Revisando la base de datos cada 5 minuto(s). Presiona Ctrl+C para detener.
+2026-08-03 14:33:47,869 | INFO     | apscheduler.scheduler | Added job "procesar_posts_pendientes" to job store "default"
+2026-08-03 14:33:47,869 | INFO     | apscheduler.scheduler | Scheduler started
+2026-08-03 14:33:47,870 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 17:38:47 UTC)" (scheduled at 2026-08-03 17:33:47.867108+00:00)
+2026-08-03 14:33:47,878 | INFO     | scheduler | Se encontraron 1 post(s) listos para publicar.
+2026-08-03 14:33:47,878 | INFO     | scheduler | Procesando post id=1 (IMAGE)...
+2026-08-03 14:33:47,881 | INFO     | database | Post id=1 actualizado a estado 'PROCESSING'.
+2026-08-03 14:33:47,890 | INFO     | instagram_api | Creando contenedor de media (IMAGE)...
+2026-08-03 14:33:48,197 | ERROR    | instagram_api | Error de la Graph API (HTTP 400): Invalid OAuth access token - Cannot parse access token
+2026-08-03 14:33:48,197 | CRITICAL | scheduler | El access token expiró. Se detiene el ciclo actual: El access token es inválido o expiró: Invalid OAuth access token - Cannot parse access token
+2026-08-03 14:33:48,198 | INFO     | database | Post id=1 actualizado a estado 'FAILED'.
+2026-08-03 14:33:48,207 | ERROR    | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 17:38:47 UTC)" raised an exception
+Traceback (most recent call last):
+  File "C:\Users\elias\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\apscheduler\executors\base.py", line 131, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+  File "C:\Users\elias\OneDrive\Escritorio\instagram-autopilot\scheduler.py", line 37, in procesar_posts_pendientes
+    _procesar_un_post(post)
+    ~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\elias\OneDrive\Escritorio\instagram-autopilot\scheduler.py", line 49, in _procesar_un_post
+    resultado = instagram_api.publicar_post_completo(
+        media_url=post.media_url,
+        caption=post.caption,
+        media_type=post.media_type,
+    )
+  File "C:\Users\elias\OneDrive\Escritorio\instagram-autopilot\instagram_api.py", line 202, in publicar_post_completo
+    creation_id = crear_contenedor_media(media_url, caption, media_type)
+  File "C:\Users\elias\OneDrive\Escritorio\instagram-autopilot\instagram_api.py", line 108, in crear_contenedor_media
+    _manejar_error_http(respuesta)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\elias\OneDrive\Escritorio\instagram-autopilot\instagram_api.py", line 69, in _manejar_error_http
+    raise TokenExpiradoError(f"El access token es inválido o expiró: {mensaje}")
+instagram_api.TokenExpiradoError: El access token es inválido o expiró: Invalid OAuth access token - Cannot parse access token
+2026-08-03 14:38:10,838 | INFO     | scheduler | Scheduler detenido por el usuario.
+2026-08-03 14:38:37,786 | INFO     | __main__ | Iniciando Piloto Automático de Instagram...
+2026-08-03 14:38:37,789 | INFO     | database | Base de datos inicializada correctamente en 'instagram_autopilot.db'.
+2026-08-03 14:38:37,790 | INFO     | apscheduler.scheduler | Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-08-03 14:38:37,790 | INFO     | scheduler | Scheduler iniciado. Revisando la base de datos cada 5 minuto(s). Presiona Ctrl+C para detener.
+2026-08-03 14:38:37,792 | INFO     | apscheduler.scheduler | Added job "procesar_posts_pendientes" to job store "default"
+2026-08-03 14:38:37,792 | INFO     | apscheduler.scheduler | Scheduler started
+2026-08-03 14:38:37,793 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 17:43:37 UTC)" (scheduled at 2026-08-03 17:38:37.789606+00:00)
+2026-08-03 14:38:37,799 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 17:43:37 UTC)" executed successfully
+2026-08-03 14:43:37,793 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 17:48:37 UTC)" (scheduled at 2026-08-03 17:43:37.789606+00:00)
+2026-08-03 14:43:37,795 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 17:48:37 UTC)" executed successfully
+2026-08-03 14:48:37,798 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 17:53:37 UTC)" (scheduled at 2026-08-03 17:48:37.789606+00:00)
+2026-08-03 14:48:37,800 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 17:53:37 UTC)" executed successfully
+2026-08-03 14:53:37,796 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 17:58:37 UTC)" (scheduled at 2026-08-03 17:53:37.789606+00:00)
+2026-08-03 14:53:37,798 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 17:58:37 UTC)" executed successfully
+2026-08-03 14:58:37,790 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:03:37 UTC)" (scheduled at 2026-08-03 17:58:37.789606+00:00)
+2026-08-03 14:58:37,792 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:03:37 UTC)" executed successfully
+2026-08-03 15:03:37,797 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:08:37 UTC)" (scheduled at 2026-08-03 18:03:37.789606+00:00)
+2026-08-03 15:03:37,798 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:08:37 UTC)" executed successfully
+2026-08-03 15:08:37,838 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:13:37 UTC)" (scheduled at 2026-08-03 18:08:37.789606+00:00)
+2026-08-03 15:08:37,860 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:13:37 UTC)" executed successfully
+2026-08-03 15:13:37,796 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:18:37 UTC)" (scheduled at 2026-08-03 18:13:37.789606+00:00)
+2026-08-03 15:13:37,797 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:18:37 UTC)" executed successfully
+2026-08-03 15:18:37,803 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:23:37 UTC)" (scheduled at 2026-08-03 18:18:37.789606+00:00)
+2026-08-03 15:18:37,805 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:23:37 UTC)" executed successfully
+2026-08-03 15:19:15,835 | INFO     | database | Base de datos inicializada correctamente en 'instagram_autopilot.db'.
+2026-08-03 15:19:15,850 | INFO     | database | Post creado con id=2, programado para 2026-08-04 10:00:00.
+2026-08-03 15:23:37,801 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:28:37 UTC)" (scheduled at 2026-08-03 18:23:37.789606+00:00)
+2026-08-03 15:23:37,802 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:28:37 UTC)" executed successfully
+2026-08-03 15:28:37,801 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:33:37 UTC)" (scheduled at 2026-08-03 18:28:37.789606+00:00)
+2026-08-03 15:28:37,802 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:33:37 UTC)" executed successfully
+2026-08-03 15:33:37,790 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:38:37 UTC)" (scheduled at 2026-08-03 18:33:37.789606+00:00)
+2026-08-03 15:33:37,792 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:38:37 UTC)" executed successfully
+2026-08-03 15:38:37,794 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:43:37 UTC)" (scheduled at 2026-08-03 18:38:37.789606+00:00)
+2026-08-03 15:38:37,796 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:43:37 UTC)" executed successfully
+2026-08-03 15:43:37,804 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:48:37 UTC)" (scheduled at 2026-08-03 18:43:37.789606+00:00)
+2026-08-03 15:43:37,805 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:48:37 UTC)" executed successfully
+2026-08-03 15:48:37,795 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:53:37 UTC)" (scheduled at 2026-08-03 18:48:37.789606+00:00)
+2026-08-03 15:48:37,797 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:53:37 UTC)" executed successfully
+2026-08-03 15:53:37,802 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:58:37 UTC)" (scheduled at 2026-08-03 18:53:37.789606+00:00)
+2026-08-03 15:53:37,803 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 18:58:37 UTC)" executed successfully
+2026-08-03 15:58:37,799 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:03:37 UTC)" (scheduled at 2026-08-03 18:58:37.789606+00:00)
+2026-08-03 15:58:37,801 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:03:37 UTC)" executed successfully
+2026-08-03 16:03:37,800 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:08:37 UTC)" (scheduled at 2026-08-03 19:03:37.789606+00:00)
+2026-08-03 16:03:37,803 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:08:37 UTC)" executed successfully
+2026-08-03 16:08:43,941 | WARNING  | apscheduler.executors.default | Run time of job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:13:37 UTC)" was missed by 0:00:06.151879
+2026-08-03 16:13:37,791 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:18:37 UTC)" (scheduled at 2026-08-03 19:13:37.789606+00:00)
+2026-08-03 16:13:37,792 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:18:37 UTC)" executed successfully
+2026-08-03 16:18:37,794 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:23:37 UTC)" (scheduled at 2026-08-03 19:18:37.789606+00:00)
+2026-08-03 16:18:37,795 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:23:37 UTC)" executed successfully
+2026-08-03 16:23:37,801 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:28:37 UTC)" (scheduled at 2026-08-03 19:23:37.789606+00:00)
+2026-08-03 16:23:37,803 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:28:37 UTC)" executed successfully
+2026-08-03 16:28:37,802 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:33:37 UTC)" (scheduled at 2026-08-03 19:28:37.789606+00:00)
+2026-08-03 16:28:37,803 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:33:37 UTC)" executed successfully
+2026-08-03 16:33:37,792 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:38:37 UTC)" (scheduled at 2026-08-03 19:33:37.789606+00:00)
+2026-08-03 16:33:37,794 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:38:37 UTC)" executed successfully
+2026-08-03 16:38:37,801 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:43:37 UTC)" (scheduled at 2026-08-03 19:38:37.789606+00:00)
+2026-08-03 16:38:37,803 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:43:37 UTC)" executed successfully
+2026-08-03 16:43:37,792 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:48:37 UTC)" (scheduled at 2026-08-03 19:43:37.789606+00:00)
+2026-08-03 16:43:37,793 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:48:37 UTC)" executed successfully
+2026-08-03 16:48:37,800 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:53:37 UTC)" (scheduled at 2026-08-03 19:48:37.789606+00:00)
+2026-08-03 16:48:37,801 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:53:37 UTC)" executed successfully
+2026-08-03 16:53:37,805 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:58:37 UTC)" (scheduled at 2026-08-03 19:53:37.789606+00:00)
+2026-08-03 16:53:37,806 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 19:58:37 UTC)" executed successfully
+2026-08-03 16:58:37,793 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:03:37 UTC)" (scheduled at 2026-08-03 19:58:37.789606+00:00)
+2026-08-03 16:58:37,794 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:03:37 UTC)" executed successfully
+2026-08-03 17:03:37,791 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:08:37 UTC)" (scheduled at 2026-08-03 20:03:37.789606+00:00)
+2026-08-03 17:03:37,793 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:08:37 UTC)" executed successfully
+2026-08-03 17:08:37,791 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:13:37 UTC)" (scheduled at 2026-08-03 20:08:37.789606+00:00)
+2026-08-03 17:08:37,792 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:13:37 UTC)" executed successfully
+2026-08-03 17:13:37,796 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:18:37 UTC)" (scheduled at 2026-08-03 20:13:37.789606+00:00)
+2026-08-03 17:13:37,797 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:18:37 UTC)" executed successfully
+2026-08-03 17:18:37,797 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:23:37 UTC)" (scheduled at 2026-08-03 20:18:37.789606+00:00)
+2026-08-03 17:18:37,799 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:23:37 UTC)" executed successfully
+2026-08-03 17:23:37,795 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:28:37 UTC)" (scheduled at 2026-08-03 20:23:37.789606+00:00)
+2026-08-03 17:23:37,796 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:28:37 UTC)" executed successfully
+2026-08-03 17:28:37,795 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:33:37 UTC)" (scheduled at 2026-08-03 20:28:37.789606+00:00)
+2026-08-03 17:28:37,796 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:33:37 UTC)" executed successfully
+2026-08-03 17:33:37,793 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:38:37 UTC)" (scheduled at 2026-08-03 20:33:37.789606+00:00)
+2026-08-03 17:33:37,794 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:38:37 UTC)" executed successfully
+2026-08-03 17:38:37,803 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:43:37 UTC)" (scheduled at 2026-08-03 20:38:37.789606+00:00)
+2026-08-03 17:38:37,805 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:43:37 UTC)" executed successfully
+2026-08-03 17:43:37,797 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:48:37 UTC)" (scheduled at 2026-08-03 20:43:37.789606+00:00)
+2026-08-03 17:43:37,798 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:48:37 UTC)" executed successfully
+2026-08-03 17:48:37,794 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:53:37 UTC)" (scheduled at 2026-08-03 20:48:37.789606+00:00)
+2026-08-03 17:48:37,796 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:53:37 UTC)" executed successfully
+2026-08-03 17:53:37,806 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:58:37 UTC)" (scheduled at 2026-08-03 20:53:37.789606+00:00)
+2026-08-03 17:53:37,808 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 20:58:37 UTC)" executed successfully
+2026-08-03 17:58:37,790 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:03:37 UTC)" (scheduled at 2026-08-03 20:58:37.789606+00:00)
+2026-08-03 17:58:37,791 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:03:37 UTC)" executed successfully
+2026-08-03 18:03:37,800 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:08:37 UTC)" (scheduled at 2026-08-03 21:03:37.789606+00:00)
+2026-08-03 18:03:37,801 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:08:37 UTC)" executed successfully
+2026-08-03 18:08:37,796 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:13:37 UTC)" (scheduled at 2026-08-03 21:08:37.789606+00:00)
+2026-08-03 18:08:37,797 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:13:37 UTC)" executed successfully
+2026-08-03 18:13:37,802 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:18:37 UTC)" (scheduled at 2026-08-03 21:13:37.789606+00:00)
+2026-08-03 18:13:37,803 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:18:37 UTC)" executed successfully
+2026-08-03 18:18:37,801 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:23:37 UTC)" (scheduled at 2026-08-03 21:18:37.789606+00:00)
+2026-08-03 18:18:37,802 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:23:37 UTC)" executed successfully
+2026-08-03 18:23:37,805 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:28:37 UTC)" (scheduled at 2026-08-03 21:23:37.789606+00:00)
+2026-08-03 18:23:37,806 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:28:37 UTC)" executed successfully
+2026-08-03 18:28:37,802 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:33:37 UTC)" (scheduled at 2026-08-03 21:28:37.789606+00:00)
+2026-08-03 18:28:37,804 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:33:37 UTC)" executed successfully
+2026-08-03 18:33:37,804 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:38:37 UTC)" (scheduled at 2026-08-03 21:33:37.789606+00:00)
+2026-08-03 18:33:37,805 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:38:37 UTC)" executed successfully
+2026-08-03 18:38:37,793 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:43:37 UTC)" (scheduled at 2026-08-03 21:38:37.789606+00:00)
+2026-08-03 18:38:37,794 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:43:37 UTC)" executed successfully
+2026-08-03 18:43:37,803 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:48:37 UTC)" (scheduled at 2026-08-03 21:43:37.789606+00:00)
+2026-08-03 18:43:37,804 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:48:37 UTC)" executed successfully
+2026-08-03 18:48:37,800 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:53:37 UTC)" (scheduled at 2026-08-03 21:48:37.789606+00:00)
+2026-08-03 18:48:37,802 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:53:37 UTC)" executed successfully
+2026-08-03 18:53:37,803 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:58:37 UTC)" (scheduled at 2026-08-03 21:53:37.789606+00:00)
+2026-08-03 18:53:37,804 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 21:58:37 UTC)" executed successfully
+2026-08-03 18:58:37,802 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 22:03:37 UTC)" (scheduled at 2026-08-03 21:58:37.789606+00:00)
+2026-08-03 18:58:37,804 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 22:03:37 UTC)" executed successfully
+2026-08-03 19:03:37,804 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 22:08:37 UTC)" (scheduled at 2026-08-03 22:03:37.789606+00:00)
+2026-08-03 19:03:37,806 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 22:08:37 UTC)" executed successfully
+2026-08-03 19:08:37,801 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 22:13:37 UTC)" (scheduled at 2026-08-03 22:08:37.789606+00:00)
+2026-08-03 19:08:37,802 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 22:13:37 UTC)" executed successfully
+2026-08-03 19:13:37,802 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 22:18:37 UTC)" (scheduled at 2026-08-03 22:13:37.789606+00:00)
+2026-08-03 19:13:37,803 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 22:18:37 UTC)" executed successfully
+2026-08-03 19:18:37,803 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 22:23:37 UTC)" (scheduled at 2026-08-03 22:18:37.789606+00:00)
+2026-08-03 19:18:37,805 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 22:23:37 UTC)" executed successfully
+2026-08-03 19:23:37,791 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 22:28:37 UTC)" (scheduled at 2026-08-03 22:23:37.789606+00:00)
+2026-08-03 19:23:37,792 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 22:28:37 UTC)" executed successfully
+2026-08-03 19:28:37,791 | INFO     | apscheduler.executors.default | Running job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 22:33:37 UTC)" (scheduled at 2026-08-03 22:28:37.789606+00:00)
+2026-08-03 19:28:37,793 | INFO     | apscheduler.executors.default | Job "procesar_posts_pendientes (trigger: interval[0:05:00], next run at: 2026-08-03 22:33:37 UTC)" executed successfully
+2026-08-03 19:32:15,532 | INFO     | scheduler | Scheduler detenido por el usuario.

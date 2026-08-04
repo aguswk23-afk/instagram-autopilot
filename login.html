@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Instagram Autopilot</title>
+    <link rel="icon" href="data:,">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .login-container {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            padding: 40px;
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .login-header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+        .login-header p {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #cbd5e1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid #334155;
+            color: #ffffff;
+            font-size: 15px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        input:focus {
+            outline: none;
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+            border: none;
+            color: #0f172a;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        #mensaje {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            min-height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Panel de Control</h1>
+            <p>Ingresa tus credenciales para continuar</p>
+        </div>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="usuario">Usuario / Correo</label>
+                <input type="text" id="usuario" required placeholder="Tu usuario o correo">
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
+            <button type="submit">Iniciar Sesión</button>
+        </form>
+        <div id="mensaje"></div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const valorInput = document.getElementById('usuario').value;
+            const password = document.getElementById('password').value;
+            const mensajeDiv = document.getElementById('mensaje');
+
+            mensajeDiv.style.color = '#38bdf8';
+            mensajeDiv.innerText = 'Verificando credenciales...';
+
+            try {
+                const response = await fetch('http://localhost:8000/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ usuario: valorInput, email: valorInput, password })
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    mensajeDiv.style.color = '#4ade80';
+                    mensajeDiv.innerText = '¡Acceso concedido! Redirigiendo...';
+                    setTimeout(() => {
+                        window.location.href = 'http://localhost:8000/app/dashboard.html';
+                    }, 800);
+                } else {
+                    mensajeDiv.style.color = '#f87171';
+                    mensajeDiv.innerText = typeof data.detail === 'string' ? data.detail : 'Usuario o contraseña incorrectos';
+                }
+            } catch (error) {
+                mensajeDiv.style.color = '#f87171';
+                mensajeDiv.innerText = 'No se pudo conectar con el servidor.';
+            }
+        });
+    </script>
+</body>
+</html>

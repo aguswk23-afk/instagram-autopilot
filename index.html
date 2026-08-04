@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <!-- 1. Prevención de Zoom automático en iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AutoPilot OS - Automatización Profesional de Instagram</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: #0b0f19; 
+            background-image: radial-gradient(circle at top right, #1f1c2c 0%, #0b0f19 100%);
+            /* 4. Fondo fijo para evitar cortes al hacer scroll en celular */
+            background-attachment: fixed; 
+            color: #fff; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Botón mantenido abajo para esquivar la raya del monitor, con mejor contraste */
+        .top-login-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            color: #d1d5db;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 12px 24px;
+            background: rgba(17, 24, 39, 0.95);
+            border: 1px solid #374151;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            transition: all 0.2s ease;
+            z-index: 1000;
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        }
+        .top-login-btn:hover {
+            color: #fff;
+            border-color: #a855f7;
+            background: rgba(31, 41, 55, 1);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(17, 24, 39, 0.7);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid #1f2937;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+
+        .sales-pitch h1 { 
+            font-size: 42px; 
+            margin-bottom: 16px; 
+            line-height: 1.1;
+            background: linear-gradient(135deg, #a855f7, #6366f1); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        .sales-pitch p.subtitle { 
+            color: #9ca3af; 
+            font-size: 16px; 
+            margin-bottom: 30px; 
+            line-height: 1.6; 
+        }
+        
+        .price-box {
+            background: #1f2937;
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid #374151;
+            margin-bottom: 30px;
+        }
+        .price { font-size: 48px; font-weight: 800; color: #fff; margin-bottom: 20px; }
+        .price span { font-size: 16px; color: #9ca3af; font-weight: 500; }
+        
+        .form-group {
+            margin-bottom: 14px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: #9ca3af;
+            margin-bottom: 6px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px; /* 2. Áreas de toque más grandes (UX) */
+            background: #111827;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px; /* 1. Fundamental para evitar zoom en iOS */
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus {
+            border-color: #a855f7;
+        }
+
+        .btn { 
+            background: linear-gradient(135deg, #a855f7, #6366f1); 
+            color: white; 
+            border: none; 
+            padding: 16px 28px; /* 2. Botón principal más fácil de tocar */
+            font-size: 16px; 
+            font-weight: 600; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            width: 100%; 
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s; 
+            box-shadow: 0 8px 20px rgba(168, 85, 247, 0.3); 
+            margin-top: 10px;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(168, 85, 247, 0.5); }
+        .btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+        #mensaje-error {
+            color: #f87171;
+            font-size: 13px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .features { text-align: left; margin-top: 25px; font-size: 15px; color: #d1d5db; }
+        .features li { margin-bottom: 12px; list-style: none; display: flex; align-items: center; }
+        .features li::before { content: "✓"; color: #a855f7; font-weight: bold; margin-right: 12px; font-size: 18px; }
+
+        .testimonials {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+        }
+        .testimonials h3 {
+            font-size: 20px;
+            color: #e5e7eb;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .review-card {
+            background: #111827;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #1f2937;
+            position: relative;
+        }
+        .review-card .stars { color: #fbbf24; font-size: 14px; margin-bottom: 10px; }
+        .review-card p { color: #9ca3af; font-size: 14px; font-style: italic; line-height: 1.5; margin-bottom: 15px; }
+        .reviewer { display: flex; align-items: center; gap: 12px; }
+        .avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: linear-gradient(135deg, #4f46e5, #ec4899);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 16px;
+        }
+        .reviewer-info h4 { font-size: 14px; color: #fff; }
+        .reviewer-info span { font-size: 12px; color: #6b7280; }
+
+        /* Media Queries para optimizar la vista en celulares y tablets */
+        @media (max-width: 900px) {
+            body {
+                padding: 12px;
+                align-items: flex-start;
+            }
+            .container {
+                grid-template-columns: 1fr; /* Cambia a una sola columna */
+                padding: 24px;
+                gap: 30px;
+                margin-top: 20px;
+                margin-bottom: 80px; /* 3. Espacio extra para que el botón flotante no tape contenido */
+            }
+            .sales-pitch h1 { 
+                font-size: 32px; 
+            }
+            .sales-pitch p.subtitle {
+                font-size: 15px;
+                margin-bottom: 20px;
+            }
+            .price { 
+                font-size: 40px; 
+            }
+            .top-login-btn {
+                bottom: 15px;
+                right: 15px;
+                padding: 10px 18px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="/login.html" class="top-login-btn">Iniciar Sesión →</a>
+
+    <div class="container">
+        
+        <div class="sales-pitch">
+            <h1>AutoPilot OS</h1>
+            <p class="subtitle">La herramienta definitiva para automatizar tus publicaciones e historias en Instagram. Ahorra horas de trabajo gestionando todo desde un panel inteligente.</p>
+            
+            <div class="price-box">
+                <div class="price">$19 USD <span>/ mes</span></div>
+                
+                <form id="form-suscripcion">
+                    <div class="form-group">
+                        <label for="username">Nombre de Usuario</label>
+                        <input type="text" id="username" required placeholder="Ej. agustin_g">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico</label>
+                        <input type="email" id="email" required placeholder="tucorreo@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña para tu cuenta</label>
+                        <input type="password" id="password" required placeholder="••••••••">
+                    </div>
+
+                    <button type="submit" id="btn-submit" class="btn">Continuar al Pago</button>
+                    <div id="mensaje-error"></div>
+                </form>
+
+                <ul class="features" style="margin-top: 25px;">
+                    <li>Publicación automática en segundo plano 24/7.</li>
+                    <li>Sincronización masiva desde Google Sheets / CSV.</li>
+                    <li>Panel visual con grilla predictiva de tu feed.</li>
+                    <li>Conexión 100% segura con la API Oficial de Meta.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="testimonials">
+            <h3>Lo que dicen nuestros usuarios</h3>
+            
+            <div class="review-card">
+                <div class="stars">★★★★★</div>
+                <p>"Desde que uso AutoPilot, recuperé al menos 10 horas de mi semana. Dejo todo programado el domingo y el sistema publica solo. Vale cada centavo."</p>
+                <div class="reviewer">
+                    <div class="avatar">M</div>
+                    <div class="reviewer-info">
+                        <h4>Martín R.</h4>
+                        <span>Agencia de Marketing</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="stars">★★★★★</div>
+                <p>"El panel es hermoso y súper rápido. Antes pagaba plataformas carísimas, pero esto tiene exactamente lo que necesito para gestionar mi tienda sin complicaciones."</p>
+                <div class="reviewer">
+                    <div class="avatar" style="background: linear-gradient(135deg, #10b981, #3b82f6);">S</div>
+                    <div class="reviewer-info">
+                        <h4>Sofía C.</h4>
+                        <span>E-commerce Manager</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="stars">★★★★★</div>
+                <p>"Me encanta la función de importar desde CSV. Ahora armo todo mi calendario mensual en Excel, lo subo y me olvido. Una locura de herramienta."</p>
+                <div class="reviewer">
+                    <div class="avatar" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">J</div>
+                    <div class="reviewer-info">
+                        <h4>Javier G.</h4>
+                        <span>Creador de Contenido</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('form-suscripcion');
+        const btnSubmit = document.getElementById('btn-submit');
+        const mensajeError = document.getElementById('mensaje-error');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            mensajeError.textContent = '';
+            btnSubmit.disabled = true;
+            btnSubmit.textContent = 'Generando orden de pago...';
+
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/api/pre-registro-pago', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.init_point) {
+                    window.location.href = data.init_point;
+                } else {
+                    throw new Error(data.detail || 'Ocurrió un error al procesar la solicitud.');
+                }
+            } catch (error) {
+                mensajeError.textContent = error.message;
+                btnSubmit.disabled = false;
+                btnSubmit.textContent = 'Continuar al Pago';
+            }
+        });
+    </script>
+</body>
+</html>
